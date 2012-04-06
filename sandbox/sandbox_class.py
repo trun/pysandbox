@@ -29,19 +29,25 @@ class Sandbox(object):
         self.execute_subprocess = None
         self.call_fork = None
 
+    def enable_protections(self):
+        for protection in self.protections:
+            protection.enable(self)
+
+    def disable_protections(self):
+        for protection in reversed(self.protections):
+            protection.disable(self)
+
     def _call(self, func, args, kw):
         """
         Call a function in the sandbox.
         """
         args = proxy(args)
         kw = keywordsProxy(kw)
-        for protection in self.protections:
-            protection.enable(self)
+        self.enable_protections()
         try:
             return func(*args, **kw)
         finally:
-            for protection in reversed(self.protections):
-                protection.disable(self)
+            self.disable_protections()
 
     def call(self, func, *args, **kw):
         """
@@ -63,13 +69,11 @@ class Sandbox(object):
         """
         if globals is None:
             globals = {}
-        for protection in self.protections:
-            protection.enable(self)
+        self.enable_protections()
         try:
             _call_exec(code, globals, locals)
         finally:
-            for protection in reversed(self.protections):
-                protection.disable(self)
+            self.disable_protections()
 
     def execute(self, code, globals=None, locals=None):
         """
