@@ -5,7 +5,7 @@ from __future__ import absolute_import
 from sys import version_info
 if version_info < (3, 0):
     from types import NoneType, ClassType, InstanceType
-    OBJECT_TYPES = (file, ClassType, InstanceType)
+    OBJECT_TYPES = (file, ClassType, InstanceType, object)
     BYTES_TYPE = str
     UNICODE_TYPE = unicode
 else:
