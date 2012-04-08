@@ -183,6 +183,9 @@ class SandboxConfig(object):
                 '__build_class__', 'ascii', 'exec',
             ))
 
+        # TODO add mutator
+        self._builtins_additions = dict()
+
         self.sys_path = (PYTHON_STDLIB_DIR,)
 
         for feature in features:
@@ -238,6 +241,10 @@ class SandboxConfig(object):
     @property
     def builtins_whitelist(self):
         return self._builtins_whitelist.copy()
+
+    @property
+    def builtins_additions(self):
+        return self._builtins_additions.copy()
 
     def enable(self, feature):
         # If you add a new feature, update the README documentation

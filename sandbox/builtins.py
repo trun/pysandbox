@@ -74,6 +74,10 @@ class CleanupBuiltins:
             else:
                 del self.builtin_dict['help']
 
+        # Add additional builtins
+        for name, func in config.builtins_additions.items():
+            self.builtin_dict[name] = createReadOnlyObject(func)
+
         # Make builtins read only (enable restricted mode)
         safe_builtins = createReadOnlyBuiltins(self.builtin_dict.dict)
         if HAVE_CSANDBOX:
